@@ -27,9 +27,9 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 BATCH_SIZE = 5
 
-MODEL_PATH = r"C:\Users\Taha\Desktop\okul\veri bilimi 3.1\final projes\main\model\model1.pth"
-HISTORY_PATH = r"C:\Users\Taha\Desktop\okul\veri bilimi 3.1\final projes\main\model\training_history.pt"
-TEST_DATA_PATH = r"C:\Users\Taha\Desktop\okul\veri bilimi 3.1\final projes\main\OnePieceDataset\validate"
+MODEL_PATH = r"C:\Users\Taha\Desktop\okul\veri bilimi 3.1\final projes\main1\model\model1.pth"
+HISTORY_PATH = r"C:\Users\Taha\Desktop\okul\veri bilimi 3.1\final projes\main1\model\training_history.pt"
+TEST_DATA_PATH = r"C:\Users\Taha\Desktop\okul\veri bilimi 3.1\final projes\main1\OnePieceDataset\validate"
 
 # ============================================================
 # 2. DATA PREPROCESSING (NO AUGMENTATION!)
@@ -133,14 +133,24 @@ print(f"Test Accuracy: {test_accuracy:.2f}%")
 
 cm = confusion_matrix(all_labels, all_preds)
 
+fig, ax = plt.subplots(figsize=(10, 10))
+
 disp = ConfusionMatrixDisplay(
     confusion_matrix=cm,
     display_labels=class_names
 )
 
-disp.plot(cmap="Blues")
-plt.title("Confusion Matrix (Test Data)")
+disp.plot(cmap="Blues", ax=ax, colorbar=True)
+
+# X ekseni etiketlerini dikey yap
+plt.setp(ax.get_xticklabels(), rotation=90, ha="center")
+
+# Eksen başlıklarını kaldır
+ax.set_xlabel("")
+ax.set_ylabel("")
+
 plt.grid(False)
+plt.tight_layout()
 plt.show()
 
 # ============================================================
