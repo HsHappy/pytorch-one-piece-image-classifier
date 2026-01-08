@@ -1,19 +1,3 @@
-# ============================================================
-# FILE: train_cnn_model.py
-#
-# PURPOSE:
-# This script trains a CNN model using ALL available training data.
-# No validation or testing is performed here.
-#
-# Testing and evaluation are intentionally separated into another
-# script to avoid retraining the model every time.
-#
-# NOTE FOR REPORT:
-# Earlier versions of this project used a train/validation split
-# and suffered from overfitting. Data augmentation, dropout, and
-# L2 regularization were introduced to mitigate this issue.
-# ============================================================
-
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -21,10 +5,6 @@ from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
 import matplotlib.pyplot as plt
 import os
-
-# ============================================================
-# 1. CONFIGURATION
-# ============================================================
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -36,13 +16,6 @@ DATA_PATH = r"C:\\Users\\Taha\\Desktop\\okul\\veri bilimi 3.1\\final projes\\mai
 MODEL_SAVE_PATH = r"C:\\Users\\Taha\\Desktop\\okul\\veri bilimi 3.1\\final projes\\main\\model\\model1.pth"
 HISTORY_SAVE_PATH = r"C:\\Users\\Taha\\Desktop\\okul\\veri bilimi 3.1\\final projes\\main\\model\\training_history.pt"
 
-# ============================================================
-# 2. DATA PREPROCESSING & AUGMENTATION
-# ============================================================
-# NOTE FOR REPORT:
-# Data augmentation was added to reduce overfitting by artificially
-# increasing dataset diversity.
-
 train_transform = transforms.Compose([
     transforms.Lambda(lambda x: x.convert('RGB')),
     transforms.Resize((64, 64)),
@@ -53,29 +26,19 @@ train_transform = transforms.Compose([
     transforms.Normalize((0.5,), (0.5,))
 ])
 
-# Load full dataset (NO SPLIT)
 train_dataset = datasets.ImageFolder(
     root=DATA_PATH,
     transform=train_transform
 )
 
-print("\n=== DATASET INFO ===")
 print("Classes:", train_dataset.classes)
 print("Number of images:", len(train_dataset))
-print("====================\n")
 
 train_loader = DataLoader(
     train_dataset,
     batch_size=BATCH_SIZE,
     shuffle=True
 )
-
-# ============================================================
-# 3. MODEL ARCHITECTURE
-# ============================================================
-# NOTE FOR REPORT:
-# Dropout and L2 regularization were introduced after observing
-# severe overfitting in earlier experiments.
 
 class BasitCNN(nn.Module):
     def __init__(self, num_classes):
@@ -112,14 +75,10 @@ optimizer = optim.Adam(
     weight_decay=1e-4  # L2 Regularization
 )
 
-# ============================================================
-# 4. TRAINING LOOP (NO VALIDATION)
-# ============================================================
-
 train_losses = []
 train_accuracies = []
 
-print("Training started...\n")
+print("Training started\n")
 
 for epoch in range(EPOCHS):
     model.train()
@@ -150,12 +109,7 @@ for epoch in range(EPOCHS):
     train_losses.append(avg_loss)
     train_accuracies.append(accuracy)
 
-    print(f"Epoch [{epoch+1}/{EPOCHS}] "
-          f"Loss: {avg_loss:.4f} | Accuracy: {accuracy:.2f}%")
-
-# ============================================================
-# 5. SAVE MODEL & TRAINING HISTORY
-# ============================================================
+    print(f"Epoch Index: {epoch+1}/{EPOCHS}\n  Loss: {avg_loss:.4f}\n  Accuracy: {accuracy:.2f}%")
 
 torch.save(model.state_dict(), MODEL_SAVE_PATH)
 
@@ -170,14 +124,7 @@ training_history = {
 
 torch.save(training_history, HISTORY_SAVE_PATH)
 
-print("\nModel and training history saved successfully.")
-
-# ============================================================
-# 6. OPTIONAL: QUICK TRAINING CURVES (FOR DEBUGGING)
-# ============================================================
-# NOTE:
-# These plots are NOT final evaluation results.
-# Proper evaluation will be done using a separate test script.
+print("\nModel saved")
 
 plt.figure(figsize=(12, 5))
 

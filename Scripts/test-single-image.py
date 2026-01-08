@@ -1,33 +1,15 @@
-# ============================================================
-# FILE: predict_single_image.py
-#
-# PURPOSE:
-# Run inference on individual images using a trained CNN model.
-# This script is intended for manual testing and qualitative
-# evaluation (no training, no metrics).
-# ============================================================
-
 import torch
 import torch.nn as nn
 from torchvision import transforms
 from PIL import Image
 import matplotlib.pyplot as plt
 
-# ============================================================
-# 1. CONFIGURATION
-# ============================================================
-
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 MODEL_PATH = r"C:\Users\Taha\Desktop\okul\veri bilimi 3.1\final projes\main\model\model1.pth"
 HISTORY_PATH = r"C:\Users\Taha\Desktop\okul\veri bilimi 3.1\final projes\main\model\training_history.pt"
 
-# CHANGE THIS TO ANY IMAGE YOU WANT TO TEST
 IMAGE_PATH = r"C:\Users\Taha\Desktop\okul\veri bilimi 3.1\final projes\main\OnePieceDataset\train\Kurohige\Copied-Image73(Copied-Image164).png"
-
-# ============================================================
-# 2. MODEL DEFINITION (MUST MATCH TRAINING SCRIPT)
-# ============================================================
 
 class BasitCNN(nn.Module):
     def __init__(self, num_classes):
@@ -55,10 +37,6 @@ class BasitCNN(nn.Module):
 
         return x
 
-# ============================================================
-# 3. LOAD MODEL & CLASS NAMES
-# ============================================================
-
 history = torch.load(HISTORY_PATH)
 class_names = history["classes"]
 
@@ -68,12 +46,6 @@ model.eval()
 
 print("Model loaded successfully.")
 print("Classes:", class_names)
-
-# ============================================================
-# 4. IMAGE PREPROCESSING
-# ============================================================
-# IMPORTANT:
-# Must match test-time preprocessing (NO augmentation)
 
 transform = transforms.Compose([
     transforms.Lambda(lambda x: x.convert("RGB")),
@@ -85,10 +57,6 @@ transform = transforms.Compose([
 image = Image.open(IMAGE_PATH)
 input_tensor = transform(image).unsqueeze(0).to(device)
 
-# ============================================================
-# 5. INFERENCE
-# ============================================================
-
 with torch.no_grad():
     outputs = model(input_tensor)
     probabilities = torch.softmax(outputs, dim=1)
@@ -97,19 +65,9 @@ with torch.no_grad():
 predicted_class = class_names[predicted_idx.item()]
 confidence = confidence.item() * 100
 
-# ============================================================
-# 6. RESULTS
-# ============================================================
-
-print("\nPrediction Result")
-print("-----------------")
 print(f"Image: {IMAGE_PATH}")
 print(f"Predicted class: {predicted_class}")
 print(f"Confidence: {confidence:.2f}%")
-
-# ============================================================
-# 7. VISUALIZATION (OPTIONAL BUT NICE)
-# ============================================================
 
 plt.imshow(image)
 plt.axis("off")

@@ -1,16 +1,3 @@
-# ============================================================
-# FILE: test_and_visualize_model.py
-#
-# PURPOSE:
-# - Load a previously trained CNN model
-# - Evaluate it on a SEPARATE test dataset
-# - Visualize saved training metrics
-# - Produce plots suitable for academic reporting
-#
-# IMPORTANT:
-# This script DOES NOT train the model.
-# ============================================================
-
 import torch
 import torch.nn as nn
 from torchvision import datasets, transforms
@@ -19,10 +6,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 
-# ============================================================
-# 1. CONFIGURATION
-# ============================================================
-
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 BATCH_SIZE = 5
@@ -30,12 +13,6 @@ BATCH_SIZE = 5
 MODEL_PATH = r"C:\Users\Taha\Desktop\okul\veri bilimi 3.1\final projes\main1\model\model1.pth"
 HISTORY_PATH = r"C:\Users\Taha\Desktop\okul\veri bilimi 3.1\final projes\main1\model\training_history.pt"
 TEST_DATA_PATH = r"C:\Users\Taha\Desktop\okul\veri bilimi 3.1\final projes\main1\OnePieceDataset\validate"
-
-# ============================================================
-# 2. DATA PREPROCESSING (NO AUGMENTATION!)
-# ============================================================
-# NOTE FOR REPORT:
-# Test data must NOT be augmented to ensure fair evaluation.
 
 test_transform = transforms.Compose([
     transforms.Lambda(lambda x: x.convert('RGB')),
@@ -57,14 +34,9 @@ test_loader = DataLoader(
 
 class_names = test_dataset.classes
 
-print("\n=== TEST DATA INFO ===")
-print("Classes:", class_names)
-print("Number of test images:", len(test_dataset))
-print("======================\n")
-
-# ============================================================
-# 3. MODEL DEFINITION (MUST MATCH TRAINING SCRIPT!)
-# ============================================================
+print("\nTest data info:")
+print(" Classes:", class_names)
+print(" Number of test images:", len(test_dataset))
 
 class BasitCNN(nn.Module):
     def __init__(self, num_classes):
@@ -96,11 +68,7 @@ model = BasitCNN(num_classes=len(class_names)).to(device)
 model.load_state_dict(torch.load(MODEL_PATH, map_location=device))
 model.eval()
 
-print("Model loaded successfully.\n")
-
-# ============================================================
-# 4. MODEL EVALUATION
-# ============================================================
+print("\n\nModel loaded\n")
 
 all_preds = []
 all_labels = []
@@ -125,12 +93,6 @@ test_accuracy = 100 * correct / total
 
 print(f"Test Accuracy: {test_accuracy:.2f}%")
 
-# ============================================================
-# 5. CONFUSION MATRIX
-# ============================================================
-# NOTE FOR REPORT:
-# Confusion matrix provides class-level performance insight.
-
 cm = confusion_matrix(all_labels, all_preds)
 
 fig, ax = plt.subplots(figsize=(10, 10))
@@ -142,10 +104,8 @@ disp = ConfusionMatrixDisplay(
 
 disp.plot(cmap="Blues", ax=ax, colorbar=True)
 
-# X ekseni etiketlerini dikey yap
 plt.setp(ax.get_xticklabels(), rotation=90, ha="center")
 
-# Eksen başlıklarını kaldır
 ax.set_xlabel("")
 ax.set_ylabel("")
 
@@ -153,19 +113,11 @@ plt.grid(False)
 plt.tight_layout()
 plt.show()
 
-# ============================================================
-# 6. LOAD & VISUALIZE TRAINING HISTORY
-# ============================================================
-
 history = torch.load(HISTORY_PATH)
 
 train_losses = history["loss"]
 train_accuracies = history["accuracy"]
 epochs = history["epochs"]
-
-# ============================================================
-# 7. TRAINING CURVES (FROM SAVED DATA)
-# ============================================================
 
 plt.figure(figsize=(12, 5))
 
@@ -185,7 +137,3 @@ plt.grid(True)
 
 plt.tight_layout()
 plt.show()
-
-# ============================================================
-# END OF SCRIPT
-# ============================================================
