@@ -6,10 +6,10 @@ import matplotlib.pyplot as plt
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-MODEL_PATH = r"C:\Users\Taha\Desktop\okul\veri bilimi 3.1\final projes\main\model\model1.pth"
-HISTORY_PATH = r"C:\Users\Taha\Desktop\okul\veri bilimi 3.1\final projes\main\model\training_history.pt"
+MODEL_PATH = r"C:\model1.pth" #Enter model path here
+HISTORY_PATH = r"C:\training_history.pt" #Enter training history data path here
 
-IMAGE_PATH = r"C:\Users\Taha\Desktop\okul\veri bilimi 3.1\final projes\main\OnePieceDataset\train\Kurohige\Copied-Image73(Copied-Image164).png"
+IMAGE_PATH = r"C:\picture.png" #Enter the desired image path here
 
 class BasitCNN(nn.Module):
     def __init__(self, num_classes):
@@ -73,3 +73,4 @@ plt.imshow(image)
 plt.axis("off")
 plt.title(f"Prediction: {predicted_class} ({confidence:.2f}%)")
 plt.show()
+
