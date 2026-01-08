@@ -10,9 +10,9 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 BATCH_SIZE = 5
 
-MODEL_PATH = r"C:\model1.pth"
-HISTORY_PATH = r"C:\training_history.pt"
-TEST_DATA_PATH = r"C:\validate"
+MODEL_PATH = r"C:\model1.pth" #Enter model file path here
+HISTORY_PATH = r"C:\training_history.pt" #Enter training history file path here
+TEST_DATA_PATH = r"C:\validate" #Enter validate folder path here
 
 test_transform = transforms.Compose([
     transforms.Lambda(lambda x: x.convert('RGB')),
@@ -138,3 +138,4 @@ plt.grid(True)
 plt.tight_layout()
 
 plt.show()
+
