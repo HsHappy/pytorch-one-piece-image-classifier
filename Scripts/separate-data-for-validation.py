@@ -117,8 +117,8 @@ from pathlib import Path
 from glob import glob
 
 ###
-FULL_DATASET_DIRECTORY = "C:\\Users\\Taha\\Desktop\\okul\\veri bilimi 3.1\\final projes\\main\\FULL_DATASET_FIXED_NAMES"
-TARGET_DATASET_DIRECTORY = "C:\\Users\\Taha\\Desktop\\okul\\veri bilimi 3.1\\final projes\\main\\OnePieceDataset"
+FULL_DATASET_DIRECTORY = "C:\\"
+TARGET_DATASET_DIRECTORY = "C:\\"
 DATASET_VALIDATE_TO_TOTAL_RATIO = 0.2
 ###
 
@@ -140,6 +140,7 @@ for folder in folders:
     
     print("currentFolderImageCount:", currentFolderImageCount, "imageToValidateCount:", imageToValidateCount)
     moveRandomImages(trainDirectory, validateDirectory, imageToValidateCount)
+
 
 
 
