@@ -117,9 +117,9 @@ from pathlib import Path
 from glob import glob
 
 ###
-FULL_DATASET_DIRECTORY = "C:\\"
-TARGET_DATASET_DIRECTORY = "C:\\"
-DATASET_VALIDATE_TO_TOTAL_RATIO = 0.2
+FULL_DATASET_DIRECTORY = "C:\\" #Enter dataset path here
+TARGET_DATASET_DIRECTORY = "C:\\" #Enter target path here
+DATASET_VALIDATE_TO_TOTAL_RATIO = 0.2 #Enter the desired ratio of validation/full data here
 ###
 
 
@@ -140,6 +140,7 @@ for folder in folders:
     
     print("currentFolderImageCount:", currentFolderImageCount, "imageToValidateCount:", imageToValidateCount)
     moveRandomImages(trainDirectory, validateDirectory, imageToValidateCount)
+
 
 
 
