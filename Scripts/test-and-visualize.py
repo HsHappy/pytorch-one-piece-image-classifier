@@ -10,9 +10,9 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 BATCH_SIZE = 5
 
-MODEL_PATH = r"C:\Users\Taha\Desktop\okul\veri bilimi 3.1\final projes\main1\model\model1.pth"
-HISTORY_PATH = r"C:\Users\Taha\Desktop\okul\veri bilimi 3.1\final projes\main1\model\training_history.pt"
-TEST_DATA_PATH = r"C:\Users\Taha\Desktop\okul\veri bilimi 3.1\final projes\main1\OnePieceDataset\validate"
+MODEL_PATH = r"C:\model1.pth"
+HISTORY_PATH = r"C:\training_history.pt"
+TEST_DATA_PATH = r"C:\validate"
 
 test_transform = transforms.Compose([
     transforms.Lambda(lambda x: x.convert('RGB')),
@@ -136,4 +136,5 @@ plt.ylabel("Accuracy (%)")
 plt.grid(True)
 
 plt.tight_layout()
+
 plt.show()
